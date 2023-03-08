@@ -1,8 +1,11 @@
 #!/bin/bash
 
+cd "$(dirname "$0")"
+
 d=$(date +%s)
 
-curl -iX POST localhost:1026/v2/entities \
+curl -iX POST https://localhost:1026/v2/entities \
+--cert ../cert/localhost.pem  --key ../cert/localhost.key \
 -H "Content-Type: application/json" \
 --data-binary @- << EOF
 {

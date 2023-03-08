@@ -25,13 +25,17 @@ services:
     image: fiware/orion:${ORION_VERSION}
     hostname: orion
     container_name: fiware-orion
+    user: root
     depends_on:
       - mongo-db
     networks:
       - default
     ports:
       - "${ORION_PORT}:${ORION_PORT}" # localhost:1026
-    command: -dbhost mongo-db -logLevel DEBUG -noCache
+    #command: -dbhost mongo-db -logLevel DEBUG -noCache
+    command: -dbhost mongo-db -logLevel DEBUG -noCache -https -key /mount/localhost.key -cert /mount/localhost.pem
+    volumes:
+      - ./cert:/mount
     healthcheck:
       test: curl --fail -s http://orion:${ORION_PORT}/version || exit 1
       interval: 5s
